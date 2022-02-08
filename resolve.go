@@ -17,7 +17,6 @@ package yaml
 
 import (
 	"encoding/base64"
-	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -32,40 +31,40 @@ type resolveMapItem struct {
 var resolveTable = make([]byte, 256)
 var resolveMap = make(map[string]resolveMapItem)
 
-func init() {
-	t := resolveTable
-	t[int('+')] = 'S' // Sign
-	t[int('-')] = 'S'
-	for _, c := range "0123456789" {
-		t[int(c)] = 'D' // Digit
-	}
-	for _, c := range "yYnNtTfFoO~" {
-		t[int(c)] = 'M' // In map
-	}
-	t[int('.')] = '.' // Float (potentially in map)
+// func init() {
+// 	t := resolveTable
+// 	t[int('+')] = 'S' // Sign
+// 	t[int('-')] = 'S'
+// 	for _, c := range "0123456789" {
+// 		t[int(c)] = 'D' // Digit
+// 	}
+// 	for _, c := range "yYnNtTfFoO~" {
+// 		t[int(c)] = 'M' // In map
+// 	}
+// 	t[int('.')] = '.' // Float (potentially in map)
 
-	var resolveMapList = []struct {
-		v   interface{}
-		tag string
-		l   []string
-	}{
-		{true, boolTag, []string{"true", "True", "TRUE"}},
-		{false, boolTag, []string{"false", "False", "FALSE"}},
-		{nil, nullTag, []string{"", "~", "null", "Null", "NULL"}},
-		{math.NaN(), floatTag, []string{".nan", ".NaN", ".NAN"}},
-		{math.Inf(+1), floatTag, []string{".inf", ".Inf", ".INF"}},
-		{math.Inf(+1), floatTag, []string{"+.inf", "+.Inf", "+.INF"}},
-		{math.Inf(-1), floatTag, []string{"-.inf", "-.Inf", "-.INF"}},
-		{"<<", mergeTag, []string{"<<"}},
-	}
+// 	var resolveMapList = []struct {
+// 		v   interface{}
+// 		tag string
+// 		l   []string
+// 	}{
+// 		{true, boolTag, []string{"true", "True", "TRUE"}},
+// 		{false, boolTag, []string{"false", "False", "FALSE"}},
+// 		{nil, nullTag, []string{"", "~", "null", "Null", "NULL"}},
+// 		{math.NaN(), floatTag, []string{".nan", ".NaN", ".NAN"}},
+// 		{math.Inf(+1), floatTag, []string{".inf", ".Inf", ".INF"}},
+// 		{math.Inf(+1), floatTag, []string{"+.inf", "+.Inf", "+.INF"}},
+// 		{math.Inf(-1), floatTag, []string{"-.inf", "-.Inf", "-.INF"}},
+// 		{"<<", mergeTag, []string{"<<"}},
+// 	}
 
-	m := resolveMap
-	for _, item := range resolveMapList {
-		for _, s := range item.l {
-			m[s] = resolveMapItem{item.v, item.tag}
-		}
-	}
-}
+// 	m := resolveMap
+// 	for _, item := range resolveMapList {
+// 		for _, s := range item.l {
+// 			m[s] = resolveMapItem{item.v, item.tag}
+// 		}
+// 	}
+// }
 
 const (
 	nullTag      = "!!null"
@@ -83,13 +82,13 @@ const (
 var longTags = make(map[string]string)
 var shortTags = make(map[string]string)
 
-func init() {
-	for _, stag := range []string{nullTag, boolTag, strTag, intTag, floatTag, timestampTag, seqTag, mapTag, binaryTag, mergeTag} {
-		ltag := longTag(stag)
-		longTags[stag] = ltag
-		shortTags[ltag] = stag
-	}
-}
+// func init() {
+// 	for _, stag := range []string{nullTag, boolTag, strTag, intTag, floatTag, timestampTag, seqTag, mapTag, binaryTag, mergeTag} {
+// 		ltag := longTag(stag)
+// 		longTags[stag] = ltag
+// 		shortTags[ltag] = stag
+// 	}
+// }
 
 const longTagPrefix = "tag:yaml.org,2002:"
 

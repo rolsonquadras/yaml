@@ -323,20 +323,20 @@ type decoder struct {
 }
 
 var (
-	nodeType       = reflect.TypeOf(Node{})
-	durationType   = reflect.TypeOf(time.Duration(0))
-	stringMapType  = reflect.TypeOf(map[string]interface{}{})
-	generalMapType = reflect.TypeOf(map[interface{}]interface{}{})
-	ifaceType      = generalMapType.Elem()
-	timeType       = reflect.TypeOf(time.Time{})
-	ptrTimeType    = reflect.TypeOf(&time.Time{})
+	nodeType      = reflect.TypeOf(Node{})
+	durationType  = reflect.TypeOf(time.Duration(0))
+	stringMapType = reflect.TypeOf(map[string]interface{}{})
+	// generalMapType = reflect.TypeOf(map[interface{}]interface{}{})
+	// ifaceType      = generalMapType.Elem()
+	timeType    = reflect.TypeOf(time.Time{})
+	ptrTimeType = reflect.TypeOf(&time.Time{})
 )
 
 func newDecoder() *decoder {
 	d := &decoder{
-		stringMapType:  stringMapType,
-		generalMapType: generalMapType,
-		uniqueKeys:     true,
+		stringMapType: stringMapType,
+		// generalMapType: generalMapType,
+		uniqueKeys: true,
 	}
 	d.aliases = make(map[*Node]bool)
 	return d
@@ -800,13 +800,13 @@ func (d *decoder) mapping(n *Node, out reflect.Value) (good bool) {
 
 	stringMapType := d.stringMapType
 	generalMapType := d.generalMapType
-	if outt.Elem() == ifaceType {
-		if outt.Key().Kind() == reflect.String {
-			d.stringMapType = outt
-		} else if outt.Key() == ifaceType {
-			d.generalMapType = outt
-		}
-	}
+	// if outt.Elem() == ifaceType {
+	// 	if outt.Key().Kind() == reflect.String {
+	// 		d.stringMapType = outt
+	// 	} else if outt.Key() == ifaceType {
+	// 		d.generalMapType = outt
+	// 	}
+	// }
 
 	mapIsNew := false
 	if out.IsNil() {
